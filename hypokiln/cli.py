@@ -20,7 +20,6 @@ Flags on `build`:
 
 from __future__ import annotations
 
-import json
 import os
 import re
 import sys
@@ -412,7 +411,7 @@ def capability_scan_cmd(archive: bool, max_age_days: int) -> None:
         key=lambda e: e["released_date"],
     )
     if expiring_soon:
-        console.print(f"[yellow]Expiring within 14 days of cutoff:[/]")
+        console.print("[yellow]Expiring within 14 days of cutoff:[/]")
         for e in expiring_soon[:10]:
             days_left = (e["released_date"] - cutoff).days
             console.print(

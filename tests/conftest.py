@@ -7,8 +7,6 @@ filesystem gets a fresh tmp_path-based REPO_ROOT via monkeypatching.
 
 from __future__ import annotations
 
-import importlib
-import os
 import sys
 from pathlib import Path
 

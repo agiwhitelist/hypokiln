@@ -147,7 +147,7 @@ def audit_trend_radar(slug: str) -> AuditResult:
     if path is None:
         result.violations.append(AuditViolation(
             "T1",
-            f"trend-radar.md not found at any of: "
+            "trend-radar.md not found at any of: "
             + ", ".join(str(p.relative_to(REPO_ROOT)) for p in candidates),
         ))
         return result

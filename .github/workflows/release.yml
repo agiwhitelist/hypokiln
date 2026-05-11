@@ -15,6 +15,12 @@ jobs:
   pypi:
     name: Build + publish to PyPI
     runs-on: ubuntu-latest
+    # Trusted Publisher is bound to this environment in PyPI settings.
+    # The environment is auto-created on first run; gate it with required
+    # reviewers in GitHub repo Settings -> Environments -> pypi if desired.
+    environment:
+      name: pypi
+      url: https://pypi.org/project/hypokiln/
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,15 +30,15 @@ jobs:
         run: python -m pip install --upgrade build
       - name: Build sdist + wheel
         run: python -m build
+      - name: Verify dist
+        run: |
+          python -m pip install --upgrade twine
+          python -m twine check dist/*
       - name: Publish to PyPI (Trusted Publisher)
-        # Requires a PyPI Trusted Publisher to be configured for this repo.
-        # https://docs.pypi.org/trusted-publishers/
-        # If not configured yet, the step skips cleanly via continue-on-error
-        # so the rest of the release still ships.
         uses: pypa/gh-action-pypi-publish@release/v1
-        continue-on-error: true
         with:
           skip-existing: true
+          print-hash: true
 
   ghcr:
     name: Build + publish container to GHCR
