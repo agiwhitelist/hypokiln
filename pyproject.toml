@@ -1,6 +1,6 @@
 [project]
 name = "hypokiln"
-version = "0.1.0"
+version = "0.1.1"
 description = "AI-capability-wedge-driven idea kiln. Six stages from frontier-AI signals to a ranked top-3 of micro-SaaS hypotheses, with a built-in Market Skeptic critic and one human gate."
 readme = "README.md"
 license = { text = "MIT" }
