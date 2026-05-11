@@ -1,0 +1,86 @@
+[
+  {
+    "id": "h-001",
+    "slug": "ai-meeting-recap",
+    "name": "AI Meeting Recap",
+    "who": "PMs at 50-500 person SaaS companies",
+    "pain": "Spends 30 min/day rewriting meeting notes; loses action items between calls.",
+    "solution": "Browser extension that joins the call, drafts notes + action items, syncs to Linear.",
+    "wedge": "Linear-native action items (competitors only export to Notion/Slack).",
+    "pricing": { "model": "per-seat", "monthly_usd": 12 },
+    "distribution": ["product hunt", "linkedin operator content", "linear marketplace"],
+
+    "speed": 8,
+    "pain_strength": 7,
+    "distribution_score": 6,
+    "margin": 7,
+    "cheapness": 7,
+    "wow_factor": 5,
+    "payment_simplicity": 9,
+
+    "legal_risk": 2,
+    "inference_cost_risk": 5,
+    "platform_dependency_risk": 4,
+
+    "passed_kill_filter": true,
+    "kill_reason": null,
+
+    "notes": "Test with 10 PMs from r/ProductManagement before any build."
+  },
+  {
+    "id": "h-002",
+    "slug": "ssl-renewal-alarm",
+    "name": "SSL Renewal Alarm",
+    "who": "Solo devs running 3+ side projects on a VPS",
+    "pain": "Forgets to renew SSL certs; site dies on a weekend.",
+    "solution": "$3/mo monitor that pings every endpoint daily, emails 14/7/1 days before cert expiry, optional auto-renew via ACME proxy.",
+    "wedge": "Side-project pricing ($3/mo flat) + simple email-only alerts (no Slack workspace setup).",
+    "pricing": { "model": "flat", "monthly_usd": 3 },
+    "distribution": ["indie hackers", "hn show", "r/sideproject"],
+
+    "speed": 9,
+    "pain_strength": 6,
+    "distribution_score": 5,
+    "margin": 8,
+    "cheapness": 9,
+    "wow_factor": 3,
+    "payment_simplicity": 10,
+
+    "legal_risk": 0,
+    "inference_cost_risk": 0,
+    "platform_dependency_risk": 1,
+
+    "passed_kill_filter": true,
+    "kill_reason": null,
+
+    "notes": "Validate: how many devs would actually pay $3/mo vs roll their own cron?"
+  },
+  {
+    "id": "h-003",
+    "slug": "regulated-medical-llm",
+    "name": "Regulated Medical LLM",
+    "who": "US clinics",
+    "pain": "Doctors waste hours on charting.",
+    "solution": "HIPAA-grade LLM that drafts SOAP notes from audio.",
+    "wedge": "Cheaper than incumbents.",
+    "pricing": { "model": "per-seat", "monthly_usd": 199 },
+    "distribution": ["sales team"],
+
+    "speed": 2,
+    "pain_strength": 9,
+    "distribution_score": 3,
+    "margin": 6,
+    "cheapness": 1,
+    "wow_factor": 7,
+    "payment_simplicity": 2,
+
+    "legal_risk": 10,
+    "inference_cost_risk": 8,
+    "platform_dependency_risk": 4,
+
+    "passed_kill_filter": false,
+    "kill_reason": "regulated industry without legal counsel committed; requires sales team to close first 10 customers; CAC unclear",
+
+    "notes": "Example of a hypothesis that fails the kill filter despite high pain score."
+  }
+]

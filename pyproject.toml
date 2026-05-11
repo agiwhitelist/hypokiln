@@ -1,0 +1,57 @@
+[project]
+name = "hypokiln"
+version = "0.1.0"
+description = "AI-capability-wedge-driven idea kiln. Six stages from frontier-AI signals to a ranked top-3 of micro-SaaS hypotheses, with a built-in Market Skeptic critic and one human gate."
+license = { text = "MIT" }
+requires-python = ">=3.12"
+keywords = ["idea-generation", "capability-wedge", "ai", "market-validation", "claude", "codex", "gemini"]
+
+# HypoKiln is intentionally a thin orchestrator. The heavy lifting is done by
+# whichever coding-CLI you log into (codex / claude / gemini) — HypoKiln just
+# spawns it per stage with a prompt, then runs a deterministic gate and an
+# optional critic on the artifact. No agent framework dependency.
+dependencies = [
+  "click>=8.1",
+  "rich>=13.7",
+  "python-dotenv>=1.0",
+  "pydantic>=2.5",
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+  "ruff>=0.6",
+  "mypy>=1.10",
+]
+control = [
+  # FastAPI sidecar that powers the web dashboard. Optional — `kiln build`
+  # works without it.
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "sse-starlette>=2.1",
+  "watchfiles>=0.24",
+]
+
+[project.scripts]
+kiln = "hypokiln.cli:main"
+hypokiln = "hypokiln.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["hypokiln", "agents", "control"]
+
+[tool.setuptools.package-data]
+agents = ["**/instructions.md", "**/tools/**"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

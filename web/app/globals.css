@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * HypoKiln web — editorial warm-paper with a kiln-amber accent.
+ * Typography rules borrowed from impeccable.design.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500&display=swap");
+
+:root {
+  color-scheme: light;
+  --bg: oklch(96% 0.02 80);
+  --paper: oklch(98% 0.01 80);
+  --ink: oklch(20% 0.02 40);
+  --charcoal: oklch(32% 0.02 40);
+  --ash: oklch(55% 0.02 40);
+  --mist: oklch(92% 0.025 80);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: oklch(18% 0.02 40);
+  --paper: oklch(22% 0.02 40);
+  --ink: oklch(94% 0.02 80);
+  --charcoal: oklch(82% 0.02 80);
+  --ash: oklch(60% 0.02 40);
+  --mist: oklch(28% 0.02 40);
+}
+
+html {
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.editorial-shell {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 64px);
+}
+
+.editorial-rule {
+  border: none;
+  border-top: 1px solid var(--mist);
+  margin-block: 32px;
+}
+
+/* highlight.js — adapted to the warm paper */
+.hljs {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 16px;
+  border-radius: 8px;
+  font-family: "Space Grotesk", "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+/* markdown body inside artifacts */
+.prose-editorial h1,
+.prose-editorial h2,
+.prose-editorial h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  margin-top: 1.4em;
+  margin-bottom: 0.4em;
+}
+.prose-editorial h1 { font-size: 1.75rem; }
+.prose-editorial h2 { font-size: 1.4rem; }
+.prose-editorial h3 { font-size: 1.15rem; }
+.prose-editorial p { margin-block: 0.6em; }
+.prose-editorial code {
+  font-family: "Space Grotesk", monospace;
+  font-size: 0.875em;
+  background: var(--mist);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.prose-editorial pre code { background: transparent; padding: 0; }
+.prose-editorial a { color: oklch(60% 0.18 50); text-decoration: underline; }
+.prose-editorial ul, .prose-editorial ol { padding-left: 1.4em; margin-block: 0.6em; }
+.prose-editorial li { margin-block: 0.2em; }
+.prose-editorial table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-block: 0.8em;
+}
+.prose-editorial th, .prose-editorial td {
+  border: 1px solid var(--mist);
+  padding: 0.4em 0.6em;
+  text-align: left;
+}
+.prose-editorial blockquote {
+  border-left: 3px solid oklch(60% 0.18 50);
+  padding-left: 1em;
+  color: var(--charcoal);
+  font-style: italic;
+}

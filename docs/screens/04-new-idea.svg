@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" role="img" aria-label="HypoKiln new idea form">
+  <defs>
+    <style>
+      .paper { fill: #FBF5EA; }
+      .card { fill: #F6EFE3; stroke: #E5D9C0; stroke-width: 1; }
+      .ink { fill: #1F1611; }
+      .charcoal { fill: #3D2E22; }
+      .ash { fill: #897560; }
+      .amber { fill: #C4651D; }
+      .mist { fill: #E5D9C0; }
+      .display { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; }
+      .body { font-family: 'Instrument Sans', system-ui, sans-serif; }
+      .mono { font-family: 'Space Grotesk', monospace; }
+      .micro { font-family: 'Instrument Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+    </style>
+  </defs>
+  <rect width="1100" height="700" class="paper"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1100" height="64" fill="#FBF5EA" stroke="#E5D9C0"/>
+  <g transform="translate(40 18)">
+    <rect width="28" height="28" rx="6" fill="#F6EFE3"/>
+    <path d="M6 22 V15 a8 8 0 0 1 16 0 V22 Z" fill="#2A1F18"/>
+    <path d="M9 22 V18 a5 5 0 0 1 10 0 V22 Z" fill="#F6EFE3"/>
+    <path d="M14 21 c-2 -1 -2 -3 -2 -4 c0 -1 1 -2 1 -3 c1 1 1 1 2 2 c0 -1 0 -2 1 -3 c2 2 3 3 3 5 c0 1 -1 3 -3 3 Z" fill="#E07B2C"/>
+  </g>
+  <text x="76" y="38" class="display ink" font-size="20" font-weight="500">Hypo<tspan fill="#C4651D">Kiln</tspan></text>
+
+  <!-- Body -->
+  <text x="40" y="118" class="micro amber">NEW IDEA</text>
+  <text x="40" y="170" class="display ink" font-size="36" font-weight="400">Light the kiln</text>
+  <text x="40" y="208" class="body charcoal" font-size="14">One paragraph. Pricing, audience, and the rough capability angle if you have one. The Trend Scout</text>
+  <text x="40" y="228" class="body charcoal" font-size="14">will start by scanning fresh AI wedges from the last 90 days against your prompt.</text>
+
+  <!-- Prompt label -->
+  <text x="40" y="278" class="micro charcoal">IDEA PROMPT</text>
+  <rect x="40" y="290" width="780" height="160" rx="6" class="card"/>
+  <text x="56" y="318" class="body ink" font-size="13">Build me a $3/mo SSL renewal alarm for solo devs running side-project domains.</text>
+  <text x="56" y="338" class="body ink" font-size="13">Should ping email-first 14/7/1 days before expiry. Wedge: claude-haiku-4-5 batch</text>
+  <text x="56" y="358" class="body ink" font-size="13">tool calls dropped multi-domain scan cost 10× last month — incumbents (UptimeRobot,</text>
+  <text x="56" y="378" class="body ink" font-size="13">Hyperping) still bill per-monitor on legacy pricing.</text>
+  <!-- cursor -->
+  <line x1="350" y1="370" x2="350" y2="388" stroke="#C4651D" stroke-width="2"/>
+
+  <text x="40" y="472" class="micro ash">INCLUDE PRICE (E.G. $9/MO), AUDIENCE, AND THE WEDGE ANGLE IF YOU SEE ONE.</text>
+  <text x="40" y="490" class="micro ash">VAGUE PROMPTS GET VAGUE HYPOTHESES.</text>
+
+  <!-- Bottom row: CLI choice + auto-sign -->
+  <text x="40" y="530" class="micro charcoal">CODING CLI</text>
+  <rect x="40" y="542" width="370" height="44" rx="6" class="card"/>
+  <text x="56" y="568" class="body ink" font-size="13">codex (ChatGPT Plus / Pro)</text>
+  <text x="392" y="568" class="body ash" font-size="13">▾</text>
+
+  <text x="430" y="530" class="micro charcoal">G1 AUTO-SIGN</text>
+  <rect x="430" y="542" width="390" height="44" rx="6" class="card"/>
+  <rect x="446" y="558" width="14" height="14" rx="3" fill="#C4651D"/>
+  <path d="M449 565 L 452 569 L 458 562" stroke="#FBF5EA" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="470" y="568" class="body ink" font-size="13">Auto-sign G1 if pre-flight clears (≤2 alarms)</text>
+
+  <!-- Submit row -->
+  <g transform="translate(40 614)">
+    <rect width="170" height="42" rx="6" fill="#1F1611"/>
+    <text x="42" y="27" class="body" font-size="14" fill="#FBF5EA">Light the kiln</text>
+  </g>
+  <text x="230" y="641" class="body charcoal" font-size="13">← Back to ideas</text>
+
+  <!-- Sidebar: tip card -->
+  <g transform="translate(850 290)">
+    <rect width="210" height="340" rx="6" class="card"/>
+    <text x="16" y="28" class="display ink" font-size="16">Pro tip</text>
+    <text x="16" y="58" class="body charcoal" font-size="11">The Market Skeptic will hard-kill</text>
+    <text x="16" y="74" class="body charcoal" font-size="11">any hypothesis that:</text>
+
+    <text x="16" y="102" class="micro amber">·</text>
+    <text x="28" y="102" class="body charcoal" font-size="11">requires sales to close first 10</text>
+
+    <text x="16" y="128" class="micro amber">·</text>
+    <text x="28" y="128" class="body charcoal" font-size="11">is a weekend-clonable proxy</text>
+
+    <text x="16" y="154" class="micro amber">·</text>
+    <text x="28" y="154" class="body charcoal" font-size="11">has no fresh wedge (&lt; 90 days)</text>
+
+    <text x="16" y="180" class="micro amber">·</text>
+    <text x="28" y="180" class="body charcoal" font-size="11">has no viral mechanic</text>
+
+    <text x="16" y="206" class="micro amber">·</text>
+    <text x="28" y="206" class="body charcoal" font-size="11">routes secrets through us w/o</text>
+    <text x="28" y="220" class="body charcoal" font-size="11">a SOC2 budget</text>
+
+    <text x="16" y="246" class="micro amber">·</text>
+    <text x="28" y="246" class="body charcoal" font-size="11">single-vendor wedge w/o</text>
+    <text x="28" y="260" class="body charcoal" font-size="11">multi-provider plan</text>
+
+    <text x="16" y="298" class="body ash" font-size="11">Cite a fresh wedge above</text>
+    <text x="16" y="312" class="body ash" font-size="11">and the hard-kill on it lifts</text>
+    <text x="16" y="326" class="body ash" font-size="11">before Stage 4 even runs.</text>
+  </g>
+</svg>
