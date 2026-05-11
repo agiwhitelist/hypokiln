@@ -9,7 +9,7 @@
 #          lets the API run standalone (`docker run -p 8765:8765 ...`).
 
 # ── 1. web build stage ─────────────────────────
-FROM node:22-alpine AS web-builder
+FROM node:26-alpine AS web-builder
 WORKDIR /web
 COPY web/package.json web/package-lock.json* ./
 RUN npm ci --no-audit --no-fund
