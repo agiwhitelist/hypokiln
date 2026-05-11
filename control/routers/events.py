@@ -8,10 +8,8 @@ then re-fetches the affected slug's full state for a fresh render.
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 
 from fastapi import APIRouter
-from sse_starlette.sse import EventSourceResponse
 
 from hypokiln import pipeline as _pipeline
 

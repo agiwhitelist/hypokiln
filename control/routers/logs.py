@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 import os
-from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 from sse_starlette.sse import EventSourceResponse
