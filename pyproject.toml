@@ -2,9 +2,22 @@
 name = "hypokiln"
 version = "0.1.0"
 description = "AI-capability-wedge-driven idea kiln. Six stages from frontier-AI signals to a ranked top-3 of micro-SaaS hypotheses, with a built-in Market Skeptic critic and one human gate."
+readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.12"
 keywords = ["idea-generation", "capability-wedge", "ai", "market-validation", "claude", "codex", "gemini"]
+authors = [{ name = "agiwhitelist" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 
 # HypoKiln is intentionally a thin orchestrator. The heavy lifting is done by
 # whichever coding-CLI you log into (codex / claude / gemini) — HypoKiln just
@@ -17,6 +30,13 @@ dependencies = [
   "pydantic>=2.5",
   "httpx>=0.27",
 ]
+
+[project.urls]
+Homepage      = "https://github.com/agiwhitelist/hypokiln"
+Repository    = "https://github.com/agiwhitelist/hypokiln"
+Issues        = "https://github.com/agiwhitelist/hypokiln/issues"
+Changelog     = "https://github.com/agiwhitelist/hypokiln/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/agiwhitelist/hypokiln#readme"
 
 [project.optional-dependencies]
 dev = [
@@ -42,8 +62,10 @@ hypokiln = "hypokiln.cli:main"
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["hypokiln", "agents", "control"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hypokiln*", "agents*", "control*"]
+exclude = ["tests*", "scripts*", "web*", "docs*", "factory*", "skills*", "products*"]
 
 [tool.setuptools.package-data]
 agents = ["**/instructions.md", "**/tools/**"]
