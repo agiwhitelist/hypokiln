@@ -1,0 +1,47 @@
+name: Feature request
+description: Suggest a new capability, stage, gate, or UX improvement.
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        HypoKiln is intentionally narrow — it stops at G1 (idea decision) and
+        bring-your-own coding CLI. Feature requests that **add** scope are
+        welcome but get evaluated against that boundary.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: |
+        Describe the user pain. "Wouldn't it be cool if..." is fine, but a
+        concrete user story (`As an X, when I Y, I currently have to Z`) gets
+        prioritized faster.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would the ideal command / UI / artifact look like?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Where does this land?
+      options:
+        - new stage / gate
+        - new agent / skill pack
+        - CLI ergonomics
+        - web dashboard
+        - docs / examples
+        - other
+    validations:
+      required: true

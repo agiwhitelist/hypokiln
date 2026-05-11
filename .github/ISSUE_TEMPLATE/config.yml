@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/agiwhitelist/hypokiln/discussions
+    about: Questions, ideas, "how do I…?" — use Discussions first.
+  - name: Security report
+    url: https://github.com/agiwhitelist/hypokiln/security/advisories/new
+    about: Privately report a security issue (never use a public issue for this).

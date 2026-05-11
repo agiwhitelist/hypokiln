@@ -4,10 +4,14 @@
 # Usage (from inside a cloned repo):
 #   ./install.sh
 #
-# Or one-shot from the web (replace <YOUR_REPO> with your fork URL):
-#   curl -fsSL https://raw.githubusercontent.com/<YOUR_REPO>/main/install.sh | bash
+# Or one-shot from the web:
+#   curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh | bash
+#
+# When invoked outside a clone, the script auto-clones into ./hypokiln/ and
+# re-execs itself from inside the clone before doing the rest of setup.
 #
 # What it does (idempotent):
+#   0. clones the repo if invoked via curl|bash outside a checkout
 #   1. checks Python 3.12+, Node 20+, and a logged-in coding CLI
 #   2. creates .venv and installs Python deps including [control]
 #   3. installs Node deps for web/
@@ -18,6 +22,27 @@
 # Exits 0 on full success, 1 on any prerequisite or step failure.
 
 set -euo pipefail
+
+HYPOKILN_REPO_URL="${HYPOKILN_REPO_URL:-https://github.com/agiwhitelist/hypokiln.git}"
+HYPOKILN_BRANCH="${HYPOKILN_BRANCH:-main}"
+HYPOKILN_CLONE_DIR="${HYPOKILN_CLONE_DIR:-hypokiln}"
+
+# ── 0. self-bootstrap from curl | bash ─────────
+# If we were piped from curl (no local repo at $PWD), clone first.
+if [ ! -f "pyproject.toml" ] || [ ! -d ".github" ] || ! grep -q '"hypokiln"' pyproject.toml 2>/dev/null; then
+  if ! command -v git >/dev/null 2>&1; then
+    printf '\033[31m✗\033[0m git is required to bootstrap HypoKiln.\n' >&2
+    exit 1
+  fi
+  if [ -d "$HYPOKILN_CLONE_DIR/.git" ]; then
+    printf '\033[90m  reusing existing clone at ./%s\033[0m\n' "$HYPOKILN_CLONE_DIR"
+  else
+    printf '\033[1mCloning %s → ./%s\033[0m\n' "$HYPOKILN_REPO_URL" "$HYPOKILN_CLONE_DIR"
+    git clone --depth=1 --branch "$HYPOKILN_BRANCH" "$HYPOKILN_REPO_URL" "$HYPOKILN_CLONE_DIR"
+  fi
+  cd "$HYPOKILN_CLONE_DIR"
+  exec bash ./install.sh "$@"
+fi
 
 # ── colors ─────────────────────────────────────
 BOLD=$(printf '\033[1m'); RESET=$(printf '\033[0m')

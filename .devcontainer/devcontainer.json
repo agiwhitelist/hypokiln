@@ -1,0 +1,33 @@
+{
+  "name": "HypoKiln dev",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "forwardPorts": [8765, 3000],
+  "portsAttributes": {
+    "8765": { "label": "HypoKiln API", "onAutoForward": "notify" },
+    "3000": { "label": "HypoKiln dashboard", "onAutoForward": "openBrowser" }
+  },
+  "postCreateCommand": "bash ./install.sh",
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": ".venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "editor.formatOnSave": true,
+        "[python]": { "editor.defaultFormatter": "charliermarsh.ruff" }
+      }
+    }
+  }
+}

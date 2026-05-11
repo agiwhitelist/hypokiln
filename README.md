@@ -12,13 +12,27 @@
 
 <br>
 
-[![python](https://img.shields.io/badge/python-3.12%2B-blue?style=flat-square)](#one-line-install) [![next.js](https://img.shields.io/badge/next.js-15-black?style=flat-square)](web/) [![tests](https://img.shields.io/badge/tests-26%20passing-success?style=flat-square)](tests/) [![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![CI](https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml/badge.svg)](https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml) [![Release](https://github.com/agiwhitelist/hypokiln/actions/workflows/release.yml/badge.svg)](https://github.com/agiwhitelist/hypokiln/actions/workflows/release.yml) [![python](https://img.shields.io/badge/python-3.12%2B-blue?style=flat-square)](#one-line-install) [![next.js](https://img.shields.io/badge/next.js-15-black?style=flat-square)](web/) [![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+
+**macOS / Linux**
 
 ```bash
-./install.sh && make dev
+curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh | bash
 ```
 
-That's it. One command sets up the venv, installs deps, seeds demo runs, and tells you what to open.
+**Windows (PowerShell)**
+
+```powershell
+irm https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.ps1 | iex
+```
+
+**Docker**
+
+```bash
+docker compose up --build       # API on :8765, dashboard on :3000
+```
+
+One command sets up the venv, installs deps, seeds demo runs, and tells you what to open.
 
 <br>
 
@@ -75,19 +89,27 @@ This is the part that doesn't exist in any other idea tool I've seen, and it's t
 
 ## One-line install
 
-```bash
-./install.sh
-```
+Pick the row that matches your machine:
 
-That single command:
+| Platform | Command |
+|---|---|
+| macOS / Linux (web) | `curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh \| bash` |
+| Windows / PowerShell (web) | `irm https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.ps1 \| iex` |
+| From a clone (macOS / Linux) | `./install.sh` |
+| From a clone (Windows) | `.\install.ps1` |
+| Docker | `docker compose up --build` |
+| GitHub Codespaces | Click **Code → Codespaces → Create codespace**. The devcontainer runs `install.sh` for you. |
 
-1. Checks Python 3.12+ and Node 20+
-2. Detects which coding CLI you have logged in (codex / claude / gemini)
-3. Creates `.venv/` and installs the orchestrator, CLI, audits, and the FastAPI control plane
-4. `npm install` in `web/`
-5. Copies `.env.example` → `.env`
-6. Seeds four demo ideas at different pipeline stages so the dashboard isn't empty
-7. Tells you what to run next
+The installer:
+
+1. Auto-clones into `./hypokiln/` when piped from the web
+2. Checks Python 3.12+ and Node 20+
+3. Detects which coding CLI you have logged in (codex / claude / gemini)
+4. Creates `.venv/` and installs the orchestrator, CLI, audits, and the FastAPI control plane
+5. `npm install` in `web/`
+6. Copies `.env.example` → `.env`
+7. Seeds four demo ideas at different pipeline stages so the dashboard isn't empty
+8. Tells you what to run next
 
 After it finishes:
 

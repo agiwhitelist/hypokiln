@@ -1,0 +1,46 @@
+# Local two-service stack:
+#   api  — FastAPI control plane on :8765
+#   web  — Next.js dashboard on :3000
+#
+# Persists runs in ./data (mounted into the api container).
+#
+# Usage:
+#   docker compose up --build
+#   docker compose exec api kiln build "Your idea" --yolo
+
+services:
+  api:
+    build:
+      context: .
+      target: runtime
+    image: ghcr.io/agiwhitelist/hypokiln:dev
+    container_name: hypokiln-api
+    environment:
+      HYPOKILN_STATE_DIR: /data/state
+      HYPOKILN_SKIP_SKILLS: "1"
+    env_file:
+      - .env
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  web:
+    image: node:22-alpine
+    container_name: hypokiln-web
+    working_dir: /web
+    command: sh -c "npm ci --no-audit --no-fund && npm run dev -- --hostname 0.0.0.0 --port 3000"
+    environment:
+      NEXT_PUBLIC_HYPOKILN_API_URL: http://localhost:8765
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/web
+      - web_node_modules:/web/node_modules
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  web_node_modules:

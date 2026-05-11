@@ -1,0 +1,83 @@
+name: Bug report
+description: Something is broken or behaves unexpectedly.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. The more specific you are, the
+        faster we can fix it. **Please include reproduction steps and the exact
+        output you saw.**
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+      placeholder: "When I run `kiln build ...`, the gate exits 1 with ..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: Minimal steps so a maintainer can reproduce locally.
+      placeholder: |
+        1. `./install.sh`
+        2. `kiln build "..."`
+        3. Observe error at stage 3
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Paste any relevant logs. They will be auto-rendered as code.
+      render: shell
+    validations:
+      required: false
+  - type: input
+    id: hypokiln-version
+    attributes:
+      label: HypoKiln version
+      description: Output of `kiln --version` (or git SHA if installed from source).
+    validations:
+      required: true
+  - type: dropdown
+    id: cli-bin
+    attributes:
+      label: Coding CLI in use
+      options:
+        - codex
+        - claude
+        - gemini
+        - other / not relevant
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS / shell
+      placeholder: "macOS 14.5 / zsh, Ubuntu 22.04 / bash, Windows 11 / PowerShell 7"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12.5"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node version (only if the bug is in the web dashboard)
+      placeholder: "22.4.0"
+    validations:
+      required: false
