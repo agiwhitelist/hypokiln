@@ -12,9 +12,17 @@
 
 <br>
 
-[![CI](https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml/badge.svg)](https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml) [![Release](https://github.com/agiwhitelist/hypokiln/actions/workflows/release.yml/badge.svg)](https://github.com/agiwhitelist/hypokiln/actions/workflows/release.yml) [![python](https://img.shields.io/badge/python-3.12%2B-blue?style=flat-square)](#one-line-install) [![next.js](https://img.shields.io/badge/next.js-15-black?style=flat-square)](web/) [![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![CI](https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml/badge.svg)](https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml) [![Release](https://github.com/agiwhitelist/hypokiln/actions/workflows/release.yml/badge.svg)](https://github.com/agiwhitelist/hypokiln/actions/workflows/release.yml) [![PyPI](https://img.shields.io/pypi/v/hypokiln?style=flat-square&color=blue)](https://pypi.org/project/hypokiln/) [![Downloads](https://img.shields.io/pypi/dm/hypokiln?style=flat-square&color=blue)](https://pypi.org/project/hypokiln/) [![GHCR](https://img.shields.io/badge/ghcr.io-image-2496ED?style=flat-square&logo=docker)](https://github.com/agiwhitelist/hypokiln/pkgs/container/hypokiln) [![python](https://img.shields.io/pypi/pyversions/hypokiln?style=flat-square)](#one-line-install) [![next.js](https://img.shields.io/badge/next.js-15-black?style=flat-square)](web/) [![license](https://img.shields.io/github/license/agiwhitelist/hypokiln?style=flat-square&color=green)](LICENSE)
 
-**macOS / Linux**
+**Python package (recommended)**
+
+```bash
+pipx install hypokiln           # isolated CLI, no venv juggling
+# or
+pip install hypokiln            # if you already manage your own venv
+```
+
+**macOS / Linux — full stack (CLI + web dashboard)**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh | bash
@@ -29,10 +37,12 @@ irm https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.ps1 | i
 **Docker**
 
 ```bash
-docker compose up --build       # API on :8765, dashboard on :3000
+docker run --rm -p 8765:8765 ghcr.io/agiwhitelist/hypokiln:latest   # API only
+# or the two-service stack (API + Next.js dashboard):
+docker compose up --build
 ```
 
-One command sets up the venv, installs deps, seeds demo runs, and tells you what to open.
+One command sets up the venv, installs deps, seeds demo runs, and tells you what to open. After `pipx`/`pip` you only get the `kiln` CLI — for the dashboard you still want `install.sh` or Docker.
 
 <br>
 
@@ -91,14 +101,17 @@ This is the part that doesn't exist in any other idea tool I've seen, and it's t
 
 Pick the row that matches your machine:
 
-| Platform | Command |
-|---|---|
-| macOS / Linux (web) | `curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh \| bash` |
-| Windows / PowerShell (web) | `irm https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.ps1 \| iex` |
-| From a clone (macOS / Linux) | `./install.sh` |
-| From a clone (Windows) | `.\install.ps1` |
-| Docker | `docker compose up --build` |
-| GitHub Codespaces | Click **Code → Codespaces → Create codespace**. The devcontainer runs `install.sh` for you. |
+| Method | Command | Ships |
+|---|---|---|
+| PyPI via pipx (isolated CLI) | `pipx install hypokiln` | `kiln` CLI only |
+| PyPI via pip | `pip install hypokiln` | `kiln` CLI only |
+| macOS / Linux web installer | `curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh \| bash` | CLI + web dashboard + demo data |
+| Windows / PowerShell web installer | `irm https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.ps1 \| iex` | CLI + web dashboard + demo data |
+| From a clone (macOS / Linux) | `./install.sh` | CLI + web dashboard + demo data |
+| From a clone (Windows) | `.\install.ps1` | CLI + web dashboard + demo data |
+| Docker — API only | `docker run --rm -p 8765:8765 ghcr.io/agiwhitelist/hypokiln:latest` | FastAPI control plane |
+| Docker compose — full stack | `docker compose up --build` | API + Next.js dashboard |
+| GitHub Codespaces | Click **Code → Codespaces → Create codespace**. The devcontainer runs `install.sh` for you. | Everything |
 
 The installer:
 
