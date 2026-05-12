@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HypoKiln — The idea kiln</title>
+<meta name="description" content="A six-stage idea kiln. Type a paragraph, get a ranked top-3 of micro-SaaS hypotheses anchored on fresh AI capability wedges, with a built-in Market Skeptic.">
+
+<meta property="og:title" content="HypoKiln — The idea kiln">
+<meta property="og:description" content="Type a paragraph. Six stages later, three validated micro-SaaS hypotheses that survived a hard kill filter and a Market Skeptic.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://agiwhitelist.github.io/hypokiln/">
+<meta property="og:image" content="https://agiwhitelist.github.io/hypokiln/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://agiwhitelist.github.io/hypokiln/og.png">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500&display=swap">
+
+<style>
+  /* === Design tokens — verbatim from web/tailwind.config.ts === */
+  :root {
+    color-scheme: light;
+    --bg:        oklch(96% 0.02 80);
+    --paper:     oklch(98% 0.01 80);
+    --ink:       oklch(20% 0.02 40);
+    --charcoal:  oklch(32% 0.02 40);
+    --ash:       oklch(55% 0.02 40);
+    --mist:      oklch(92% 0.025 80);
+    --amber:        oklch(60% 0.18 50);
+    --amber-bright: oklch(70% 0.22 55);
+    --amber-pale:   oklch(88% 0.18 80);
+    --amber-veil:   oklch(60% 0.18 50 / 0.15);
+    --success:   oklch(55% 0.15 145);
+    --warning:   oklch(72% 0.18 70);
+    --danger:    oklch(55% 0.18 25);
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:       oklch(18% 0.02 40);
+    --paper:    oklch(22% 0.02 40);
+    --ink:      oklch(94% 0.02 80);
+    --charcoal: oklch(82% 0.02 80);
+    --ash:      oklch(60% 0.02 40);
+    --mist:     oklch(28% 0.02 40);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { font-feature-settings: "ss01", "ss02"; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    transition: background .2s ease, color .2s ease;
+  }
+  ::selection { background: var(--amber-veil); }
+
+  a { color: var(--amber); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .shell { max-width: 1100px; margin-inline: auto; padding-inline: clamp(20px, 5vw, 64px); }
+
+  /* === Header === */
+  header {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in oklch, var(--bg) 80%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--mist);
+  }
+  header .row { display: flex; align-items: center; justify-content: space-between; padding-block: 18px; gap: 24px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; }
+  .brand svg { width: 36px; height: 36px; flex: none; }
+  .brand-word { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 600; font-size: 1.5rem; letter-spacing: -0.01em; color: var(--ink); }
+  .brand-word .accent { color: var(--amber); }
+
+  nav.links { display: flex; align-items: center; gap: 24px; font-size: 0.875rem; color: var(--charcoal); }
+  nav.links a { color: var(--charcoal); transition: color .15s ease; }
+  nav.links a:hover { color: var(--amber); text-decoration: none; }
+  .cta-primary {
+    background: var(--ink); color: var(--bg);
+    padding: 8px 16px; border-radius: 8px;
+    font-weight: 500; transition: background .15s ease;
+  }
+  .cta-primary:hover { background: var(--amber); text-decoration: none; }
+  #theme-toggle {
+    background: transparent; border: 1px solid var(--mist); border-radius: 8px;
+    width: 36px; height: 36px; cursor: pointer; color: var(--charcoal);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  #theme-toggle:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* === Hero === */
+  .hero { padding-block: clamp(48px, 8vw, 96px) 32px; }
+  .eyebrow {
+    font-size: 0.6875rem; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber); font-weight: 500; margin: 0 0 14px;
+  }
+  h1.display {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 0.95; letter-spacing: -0.025em;
+    margin: 0 0 18px; color: var(--ink);
+  }
+  h1.display .accent { color: var(--amber); font-style: italic; }
+  .lede { max-width: 38em; font-size: 1.0625rem; color: var(--charcoal); margin: 0 0 28px; line-height: 1.65; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-weight: 500; font-size: 0.9375rem; transition: all .15s ease; cursor: pointer; }
+  .btn-primary { background: var(--ink); color: var(--bg); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--amber); border-color: var(--amber); text-decoration: none; }
+  .btn-secondary { background: transparent; color: var(--charcoal); border: 1px solid var(--mist); }
+  .btn-secondary:hover { border-color: var(--amber); color: var(--amber); text-decoration: none; }
+
+  /* === Sections === */
+  section.block { padding-block: clamp(48px, 7vw, 80px); border-top: 1px solid var(--mist); }
+  h2.section-title {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 16px; color: var(--ink);
+  }
+  h2.section-title .accent { color: var(--amber); }
+  .section-lede { max-width: 42em; color: var(--charcoal); margin: 0 0 36px; font-size: 1rem; }
+
+  /* === Slot-machine vs kiln === */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+  .compare > div { padding: 28px; border-radius: 14px; border: 1px solid var(--mist); background: var(--paper); }
+  .compare h3 { margin: 0 0 8px; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 1.5rem; font-style: italic; }
+  .compare .label { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ash); margin-bottom: 8px; }
+  .compare ul { margin: 16px 0 0; padding-left: 18px; color: var(--charcoal); }
+  .compare ul li { margin-block: 6px; }
+  .compare .kiln { border-color: var(--amber-pale); background: linear-gradient(180deg, var(--paper) 0%, color-mix(in oklch, var(--amber-veil) 30%, var(--paper)) 100%); }
+  .compare .kiln h3 .accent { color: var(--amber); }
+
+  /* === Stages === */
+  .stages { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 28px; }
+  @media (max-width: 980px) { .stages { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .stages { grid-template-columns: repeat(2, 1fr); } }
+  .stage {
+    position: relative; padding: 18px 16px; border: 1px solid var(--mist); border-radius: 12px; background: var(--paper);
+    transition: transform .2s cubic-bezier(.22,1,.36,1), border-color .2s ease;
+  }
+  .stage:hover { transform: translateY(-2px); border-color: var(--amber); }
+  .stage .num { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 2.25rem; line-height: 1; color: var(--amber); }
+  .stage .name { font-weight: 600; margin: 8px 0 4px; font-size: 0.9375rem; }
+  .stage .who { font-size: 0.75rem; color: var(--ash); letter-spacing: 0.04em; }
+  .stage.critique::after {
+    content: "↻ critique loop";
+    position: absolute; bottom: -10px; left: 12px;
+    background: var(--bg); padding: 2px 8px;
+    font-size: 0.625rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--amber); border: 1px solid var(--amber-pale); border-radius: 4px;
+  }
+  .stages-note { font-size: 0.875rem; color: var(--ash); max-width: 42em; }
+
+  /* === Capability radar === */
+  .wedge {
+    background: var(--paper); border: 1px solid var(--mist); border-radius: 14px;
+    padding: 28px; display: grid; grid-template-columns: 1fr; gap: 16px;
+    font-family: "Space Grotesk", ui-monospace, monospace; font-size: 0.875rem;
+  }
+  .wedge .row { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding-block: 8px; border-bottom: 1px solid var(--mist); }
+  .wedge .row:last-child { border-bottom: none; }
+  .wedge .k { color: var(--ash); letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.6875rem; align-self: center; }
+  .wedge .v { color: var(--ink); }
+  .wedge .v .url { color: var(--amber); }
+  .wedge .v .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    background: var(--amber-veil); color: var(--amber);
+    font-size: 0.6875rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600;
+    margin-right: 6px;
+  }
+
+  /* === Install tabs === */
+  .install-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab {
+    background: transparent; border: 1px solid var(--mist); padding: 8px 14px;
+    border-radius: 8px; cursor: pointer; color: var(--charcoal); font: inherit; font-size: 0.875rem;
+    transition: all .15s ease;
+  }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .tab:hover:not([aria-selected="true"]) { border-color: var(--amber); color: var(--amber); }
+
+  .codeblock {
+    position: relative;
+    background: var(--paper); border: 1px solid var(--mist); border-radius: 12px;
+    padding: 20px 24px;
+    font-family: "Space Grotesk", "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875rem; color: var(--ink);
+    overflow-x: auto; white-space: pre;
+    line-height: 1.6;
+  }
+  .codeblock .prompt { color: var(--amber); user-select: none; }
+  .codeblock .comment { color: var(--ash); }
+  .copy-btn {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--bg); color: var(--charcoal);
+    border: 1px solid var(--mist); border-radius: 6px;
+    padding: 4px 10px; cursor: pointer; font-size: 0.75rem;
+    transition: all .15s ease;
+  }
+  .copy-btn:hover { color: var(--amber); border-color: var(--amber); }
+  .copy-btn.copied { color: var(--success); border-color: var(--success); }
+  [hidden] { display: none !important; }
+
+  /* === Quality controls / quotes === */
+  .pull-quote {
+    font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.5rem, 3.2vw, 2.25rem); line-height: 1.25;
+    border-left: 3px solid var(--amber); padding-left: 24px; max-width: 28em;
+    color: var(--charcoal); margin-block: 24px;
+  }
+
+  /* === Artifact tree === */
+  .tree {
+    background: var(--paper); border: 1px solid var(--mist); border-radius: 12px;
+    padding: 24px; font-family: "Space Grotesk", ui-monospace, monospace; font-size: 0.8125rem;
+    line-height: 1.7; color: var(--charcoal); overflow-x: auto;
+  }
+  .tree .dir { color: var(--amber); }
+  .tree .file { color: var(--ink); }
+  .tree .note { color: var(--ash); font-style: italic; }
+
+  /* === CTA card === */
+  .final-cta {
+    background: linear-gradient(135deg, var(--paper) 0%, color-mix(in oklch, var(--amber-veil) 40%, var(--paper)) 100%);
+    border: 1px solid var(--amber-pale); border-radius: 18px;
+    padding: clamp(32px, 5vw, 56px); text-align: center;
+    margin-block: 24px;
+  }
+  .final-cta h2 { margin-bottom: 12px; }
+  .final-cta p { color: var(--charcoal); max-width: 36em; margin: 0 auto 24px; }
+  .final-cta .cta-row { justify-content: center; }
+
+  /* === Footer === */
+  footer {
+    padding-block: 32px;
+    border-top: 1px solid var(--mist);
+    color: var(--ash); font-size: 0.8125rem;
+  }
+  footer .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  footer a { color: var(--charcoal); }
+  footer a:hover { color: var(--amber); }
+
+  /* === Badge row === */
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-block: 18px 0; }
+  .badges img { height: 22px; }
+
+  /* === Reveal on scroll === */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal.in { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+    .stage:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="shell row">
+    <a class="brand" href="#top" aria-label="HypoKiln home">
+      <svg viewBox="0 0 96 96" fill="none" aria-hidden="true">
+        <rect width="96" height="96" rx="20" fill="oklch(96% 0.02 80)"/>
+        <path d="M28 18 c2 -6 6 -6 8 0 s6 6 8 0" stroke="oklch(60% 0.18 50)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M52 18 c2 -6 6 -6 8 0 s6 6 8 0" stroke="oklch(60% 0.18 50)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M16 80 V54 a32 32 0 0 1 64 0 V80 Z" fill="oklch(28% 0.04 40)"/>
+        <path d="M30 80 V64 a18 18 0 0 1 36 0 V80 Z" fill="oklch(96% 0.02 80)"/>
+        <path d="M48 78 c-5 -2 -8 -7 -7 -12 c0 -3 2 -5 3 -8 c1 4 2 4 4 6 c0 -4 1 -7 2 -10 c4 4 8 8 8 14 c0 5 -3 9 -8 10 Z" fill="oklch(70% 0.22 55)"/>
+        <path d="M48 75 c-2 -1 -4 -3 -3 -6 c2 -1 3 -3 3 -5 c2 3 4 5 4 8 c0 2 -2 4 -4 3 Z" fill="oklch(88% 0.18 80)"/>
+      </svg>
+      <span class="brand-word">Hypo<span class="accent">Kiln</span></span>
+    </a>
+    <nav class="links">
+      <a href="#how">How it works</a>
+      <a href="#wedge">Wedges</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/agiwhitelist/hypokiln">GitHub</a>
+      <button id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg id="icon-moon" hidden width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="https://github.com/agiwhitelist/hypokiln" class="cta-primary">View on GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero shell">
+    <p class="eyebrow">Capability · Wedge · Ideas</p>
+    <h1 class="display">The idea <span class="accent">kiln.</span></h1>
+    <p class="lede">
+      <strong>Type a paragraph. Six stages later, you have three validated micro-SaaS hypotheses that survived a hard kill filter and a Market Skeptic.</strong>
+      Every survivor is anchored on a capability wedge less than 90 days old — competitors haven't shipped against it yet.
+    </p>
+    <div class="cta-row">
+      <a href="#install" class="btn btn-primary">→ Install in one line</a>
+      <a href="https://github.com/agiwhitelist/hypokiln" class="btn btn-secondary">★ Star on GitHub</a>
+    </div>
+    <div class="badges" aria-label="Project status">
+      <a href="https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml"><img src="https://github.com/agiwhitelist/hypokiln/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+      <a href="https://pypi.org/project/hypokiln/"><img src="https://img.shields.io/pypi/v/hypokiln?style=flat-square&color=blue" alt="PyPI version"></a>
+      <a href="https://pypi.org/project/hypokiln/"><img src="https://img.shields.io/pypi/dm/hypokiln?style=flat-square&color=blue" alt="Downloads"></a>
+      <a href="https://github.com/agiwhitelist/hypokiln/pkgs/container/hypokiln"><img src="https://img.shields.io/badge/ghcr.io-image-2496ED?style=flat-square&logo=docker" alt="GHCR"></a>
+      <a href="https://github.com/agiwhitelist/hypokiln/blob/main/LICENSE"><img src="https://img.shields.io/github/license/agiwhitelist/hypokiln?style=flat-square&color=green" alt="License"></a>
+    </div>
+  </section>
+
+  <section class="block shell reveal" id="why">
+    <h2 class="section-title">Most AI idea generators are <span class="accent">slot machines.</span></h2>
+    <p class="section-lede">
+      Pull the lever, get fifty plausible-sounding hypotheses, half of which die in week one because they were built on yesterday's capabilities or land in a red ocean. HypoKiln is the opposite of a slot machine.
+    </p>
+    <div class="compare">
+      <div>
+        <div class="label">Slot machine</div>
+        <h3>Brainstormer</h3>
+        <ul>
+          <li>"AI-powered note app" is an accepted output</li>
+          <li>No source for the capability claim</li>
+          <li>No competitor check, no pricing reality</li>
+          <li>Looks confident — survives by sounding plausible</li>
+          <li>You find out it's dead at month six</li>
+        </ul>
+      </div>
+      <div class="kiln">
+        <div class="label">The kiln</div>
+        <h3>Hypo<span class="accent">Kiln</span></h3>
+        <ul>
+          <li>Refuses ideas without a primary-source URL for the wedge</li>
+          <li>Wedge must be ≤90 days old or it gets archived</li>
+          <li>13 named hard-kills + 5-persona stress test before approval</li>
+          <li>Three deterministic structural audits, not vibes</li>
+          <li>You find out it's dead in 30 minutes</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block shell reveal" id="how">
+    <p class="eyebrow">How it works</p>
+    <h2 class="section-title">Six stages. <span class="accent">One human gate.</span></h2>
+    <p class="section-lede">
+      No deploy, no build, no bullshit — the kiln stops at G1, where the highest-leverage decision lives. Three stages run under a critique loop: author drafts → deterministic gate runs → if FAIL, a critic agent writes structured feedback → author iterates.
+    </p>
+    <div class="stages">
+      <div class="stage critique"><div class="num">1</div><div class="name">Trend Radar</div><div class="who">Trend Scout</div></div>
+      <div class="stage"><div class="num">2</div><div class="name">Pain Extractor</div><div class="who">Trend Scout</div></div>
+      <div class="stage critique"><div class="num">3</div><div class="name">Hypothesis Generator</div><div class="who">Product Strategist</div></div>
+      <div class="stage"><div class="num">4</div><div class="name">Kill Filter</div><div class="who">Market Skeptic</div></div>
+      <div class="stage critique"><div class="num">5</div><div class="name">Market Snapshot</div><div class="who">Market Skeptic</div></div>
+      <div class="stage"><div class="num">6</div><div class="name">Selection + Architecture</div><div class="who">Product Strategist</div></div>
+    </div>
+    <p class="stages-note">↻ marks stages wrapped in the critique loop. The author can't pass a stage by sounding confident — only by passing the deterministic gate.</p>
+  </section>
+
+  <section class="block shell reveal" id="wedge">
+    <p class="eyebrow">The capability radar</p>
+    <h2 class="section-title">No wedge → <span class="accent">no idea.</span></h2>
+    <p class="section-lede">
+      <code style="font-family:'Space Grotesk',monospace;background:var(--mist);padding:2px 6px;border-radius:4px;">factory/00-radar/capability-wedges.md</code> is a canonical log of AI/LLM/media releases from the last 90 days. Stage 4's Kill Filter hard-kills any hypothesis whose <code style="font-family:'Space Grotesk',monospace;background:var(--mist);padding:2px 6px;border-radius:4px;">capability_wedge.id</code> isn't on the active list, isn't fresh, or doesn't have a primary-source URL.
+    </p>
+    <div class="wedge">
+      <div class="row"><span class="k">wedge.id</span><span class="v">claude-haiku-4-5-batch-tools</span></div>
+      <div class="row"><span class="k">type</span><span class="v"><span class="tag">price drop</span><span class="tag">new capability</span></span></div>
+      <div class="row"><span class="k">claim</span><span class="v">Batch tool-calls drop scan cost 10× per request</span></div>
+      <div class="row"><span class="k">source</span><span class="v"><span class="url">https://www.anthropic.com/news/claude-haiku-4-5</span></span></div>
+      <div class="row"><span class="k">released</span><span class="v">2026-04-12 · 30 days old · ✓ fresh</span></div>
+      <div class="row"><span class="k">unlocks</span><span class="v">log-scanner ($49/mo) · CRM-enricher ($29/mo) · CI-flake-detector ($99/mo)</span></div>
+    </div>
+    <p class="pull-quote">"AI-powered" is rejected.<br>"Batch tool-calls drop scan cost 10× — Anthropic, 2026-04-12" is accepted.</p>
+  </section>
+
+  <section class="block shell reveal" id="install">
+    <p class="eyebrow">One-line install</p>
+    <h2 class="section-title">Pick the row that <span class="accent">matches your machine.</span></h2>
+
+    <div class="install-tabs" role="tablist" aria-label="Install method">
+      <button class="tab" role="tab" data-tab="pipx"   aria-selected="true">pipx</button>
+      <button class="tab" role="tab" data-tab="curl"   aria-selected="false">curl &#124; bash</button>
+      <button class="tab" role="tab" data-tab="pwsh"   aria-selected="false">PowerShell</button>
+      <button class="tab" role="tab" data-tab="docker" aria-selected="false">Docker</button>
+      <button class="tab" role="tab" data-tab="git"    aria-selected="false">git clone</button>
+    </div>
+
+    <div class="codeblock" data-pane="pipx">
+      <button class="copy-btn" type="button">Copy</button><span class="comment"># Isolated CLI, recommended</span>
+<span class="prompt">$ </span>pipx install hypokiln
+<span class="prompt">$ </span>kiln build <span style="color:var(--success)">"Your idea here"</span> --yolo
+    </div>
+    <div class="codeblock" data-pane="curl" hidden>
+      <button class="copy-btn" type="button">Copy</button><span class="comment"># macOS / Linux — full stack: CLI + Next.js dashboard + demo data</span>
+<span class="prompt">$ </span>curl -fsSL https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.sh | bash
+<span class="prompt">$ </span>cd hypokiln && make dev
+    </div>
+    <div class="codeblock" data-pane="pwsh" hidden>
+      <button class="copy-btn" type="button">Copy</button><span class="comment"># Windows / PowerShell</span>
+<span class="prompt">PS&gt; </span>irm https://raw.githubusercontent.com/agiwhitelist/hypokiln/main/install.ps1 | iex
+    </div>
+    <div class="codeblock" data-pane="docker" hidden>
+      <button class="copy-btn" type="button">Copy</button><span class="comment"># API only — multi-arch image (linux/amd64 + linux/arm64)</span>
+<span class="prompt">$ </span>docker run --rm -p 8765:8765 ghcr.io/agiwhitelist/hypokiln:latest
+<span class="comment"># Or the two-service stack (API + Next.js dashboard):</span>
+<span class="prompt">$ </span>docker compose up --build
+    </div>
+    <div class="codeblock" data-pane="git" hidden>
+      <button class="copy-btn" type="button">Copy</button><span class="prompt">$ </span>git clone https://github.com/agiwhitelist/hypokiln.git
+<span class="prompt">$ </span>cd hypokiln && ./install.sh
+<span class="prompt">$ </span>make dev
+    </div>
+  </section>
+
+  <section class="block shell reveal" id="artifacts">
+    <p class="eyebrow">What lands on disk</p>
+    <h2 class="section-title">Markdown and JSON. <span class="accent">Nothing hidden in a database.</span></h2>
+    <p class="section-lede">
+      Every run drops a self-contained folder under <code style="font-family:'Space Grotesk',monospace;background:var(--mist);padding:2px 6px;border-radius:4px;">products/&lt;slug&gt;/</code>. You can <code style="font-family:'Space Grotesk',monospace;background:var(--mist);padding:2px 6px;border-radius:4px;">cat</code> your way through any idea, and every artifact is the input for the next stage. No DB, no migrations, no schema drift.
+    </p>
+<pre class="tree"><span class="dir">products/&lt;slug&gt;/</span>
+├── <span class="dir">research/</span>
+│   ├── <span class="file">trend-radar.md</span>            <span class="note">10+ dated signals with URLs, 3+ distinct sources</span>
+│   ├── <span class="file">round-001.json</span>            <span class="note">10+ hypotheses, each with capability_wedge + viral_mechanic</span>
+│   ├── <span class="file">market-snapshot.md</span>        <span class="note">why-now + recent-date evidence</span>
+│   ├── <span class="file">competitor-analysis.md</span>    <span class="note">3+ named competitors with URLs and moat-depth scores</span>
+│   └── <span class="file">pricing-research.md</span>       <span class="note">2+ price tokens, willingness-to-pay quotes</span>
+├── <span class="dir">spec/</span>
+│   ├── <span class="file">decisions.md</span>              <span class="note">append-only cross-stage memory log</span>
+│   ├── <span class="file">architecture.md</span>           <span class="note">form_factor + archetype + wow_moment + viral_mechanic</span>
+│   ├── <span class="file">gate-1-preflight.md</span>       <span class="note">10-question alarm-count checklist</span>
+│   └── <span class="file">gate-1-approval.md</span>        <span class="note">signed (or rejected) verdict</span>
+└── <span class="dir">.critique-log/</span>                <span class="note">per-iteration transcripts + critic feedback</span>
+</pre>
+  </section>
+
+  <section class="block shell reveal">
+    <p class="eyebrow">Bring your own coding CLI</p>
+    <h2 class="section-title">Run on the subscription <span class="accent">you already pay for.</span></h2>
+    <p class="section-lede">
+      HypoKiln never talks to provider APIs directly. Each stage spawns a logged-in coding CLI as a subprocess; auth lives in the CLI's session file. HypoKiln cannot read your token even if it wanted to.
+    </p>
+    <div class="compare">
+      <div>
+        <div class="label">codex</div>
+        <h3>OpenAI</h3>
+        <ul><li>Login: <code>codex login</code></li><li>Plan: ChatGPT Plus / Pro / Team</li></ul>
+      </div>
+      <div>
+        <div class="label">claude</div>
+        <h3>Anthropic</h3>
+        <ul><li>Login: <code>claude</code> → <code>/login</code></li><li>Plan: Claude.ai Pro / Team</li></ul>
+      </div>
+      <div>
+        <div class="label">gemini</div>
+        <h3>Google</h3>
+        <ul><li>Login: <code>gemini auth</code></li><li>Plan: Google AI Studio</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell reveal" id="cta">
+    <div class="final-cta">
+      <h2 class="section-title">Most teams get the <span class="accent">which-idea</span> decision wrong.</h2>
+      <p>Then they burn the next six months building something that was always going to die. You don't need a kiln for the build. You need a kiln for the decision.</p>
+      <div class="cta-row">
+        <a href="https://github.com/agiwhitelist/hypokiln" class="btn btn-primary">★ View on GitHub</a>
+        <a href="https://pypi.org/project/hypokiln/" class="btn btn-secondary">→ pipx install hypokiln</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell row">
+    <div>
+      <span class="brand-word" style="font-size:1rem;">Hypo<span class="accent">Kiln</span></span>
+      &nbsp;·&nbsp; MIT
+      &nbsp;·&nbsp; v<span id="version">0.1.1</span>
+    </div>
+    <div>
+      <a href="https://github.com/agiwhitelist/hypokiln">GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="https://pypi.org/project/hypokiln/">PyPI</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/agiwhitelist/hypokiln/pkgs/container/hypokiln">GHCR</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/agiwhitelist/hypokiln/blob/main/CHANGELOG.md">Changelog</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // === Theme toggle ===
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var sun = document.getElementById('icon-sun');
+    var moon = document.getElementById('icon-moon');
+    var stored = null;
+    try { stored = localStorage.getItem('hypokiln-theme'); } catch (e) {}
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = stored || (prefersDark ? 'dark' : 'light');
+    apply(theme);
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next);
+      try { localStorage.setItem('hypokiln-theme', next); } catch (e) {}
+    });
+    function apply(t) {
+      root.setAttribute('data-theme', t);
+      var dark = t === 'dark';
+      sun.hidden = dark; moon.hidden = !dark;
+    }
+  })();
+
+  // === Install tabs ===
+  (function () {
+    var tabs = document.querySelectorAll('.tab');
+    var panes = document.querySelectorAll('[data-pane]');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var name = tab.getAttribute('data-tab');
+        tabs.forEach(function (t) { t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+        panes.forEach(function (p) { p.hidden = p.getAttribute('data-pane') !== name; });
+      });
+    });
+  })();
+
+  // === Copy buttons ===
+  (function () {
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var block = btn.closest('.codeblock');
+        // strip the Copy button text + leading comment markup from copy
+        var text = '';
+        block.childNodes.forEach(function (n) {
+          if (n === btn) return;
+          if (n.nodeType === 3) text += n.textContent;
+          else if (n.nodeType === 1) text += n.textContent;
+        });
+        // collapse leading whitespace per line, drop empty top/bottom
+        text = text.replace(/^\s+|\s+$/g, '');
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(function () {
+            btn.textContent = 'Copied';
+            btn.classList.add('copied');
+            setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1400);
+          });
+        }
+      });
+    });
+  })();
+
+  // === Reveal on scroll ===
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '-10% 0px -10% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
