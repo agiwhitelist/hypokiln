@@ -262,6 +262,70 @@
     html { scroll-behavior: auto; }
     .stage:hover { transform: none; }
   }
+
+  /* === BYO-CLI compare uses 3 columns naturally === */
+  .compare.triple { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 720px) { .compare.triple { grid-template-columns: 1fr; } }
+
+  /* === Mobile / narrow viewport refinements === */
+  @media (max-width: 860px) {
+    nav.links a:not(.cta-primary) { display: none; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    header .row { padding-block: 14px; gap: 12px; }
+    .brand svg { width: 30px; height: 30px; }
+    .brand-word { font-size: 1.25rem; }
+    nav.links { gap: 10px; }
+    .cta-primary { padding: 7px 12px; font-size: 0.8125rem; }
+    #theme-toggle { width: 32px; height: 32px; }
+
+    .hero { padding-block: 40px 24px; }
+    h1.display { line-height: 1; margin-bottom: 14px; }
+    .lede { font-size: 1rem; margin-bottom: 22px; }
+    .cta-row { gap: 8px; }
+    .btn { padding: 10px 16px; font-size: 0.875rem; }
+    .badges img { height: 20px; }
+
+    section.block { padding-block: 44px; }
+    h2.section-title { font-size: clamp(1.625rem, 7vw, 2.25rem); margin-bottom: 12px; }
+    .section-lede { margin-bottom: 24px; font-size: 0.9375rem; }
+    .pull-quote { font-size: 1.25rem; padding-left: 16px; }
+
+    /* wedge: stack label above value */
+    .wedge { padding: 20px; gap: 10px; font-size: 0.8125rem; }
+    .wedge .row { grid-template-columns: 1fr; gap: 2px; padding-block: 8px; }
+    .wedge .v .url { word-break: break-all; }
+
+    /* compare cards: tighter padding */
+    .compare > div { padding: 22px; }
+    .compare h3 { font-size: 1.25rem; }
+    .compare ul { font-size: 0.9375rem; }
+
+    /* stage cards: bigger touch target, smaller number */
+    .stage { padding: 16px 14px; }
+    .stage .num { font-size: 1.875rem; }
+
+    /* tabs scroll horizontally if they overflow */
+    .install-tabs { gap: 6px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; margin-inline: -4px; padding-inline: 4px; }
+    .install-tabs::-webkit-scrollbar { display: none; }
+    .install-tabs { scrollbar-width: none; }
+    .tab { white-space: nowrap; padding: 7px 12px; font-size: 0.8125rem; }
+
+    .codeblock { padding: 16px 18px; font-size: 0.8125rem; }
+    .copy-btn { top: 10px; right: 10px; padding: 3px 8px; font-size: 0.6875rem; }
+    .tree { padding: 18px; font-size: 0.75rem; }
+
+    .final-cta { padding: 32px 22px; }
+
+    footer { padding-block: 22px; }
+    footer .row { flex-direction: column; align-items: flex-start; gap: 6px; font-size: 0.75rem; }
+  }
+
+  @media (max-width: 380px) {
+    .brand-word { font-size: 1.125rem; }
+    h1.display { font-size: 2.5rem; }
+  }
 </style>
 </head>
 <body>
@@ -448,7 +512,7 @@
     <p class="section-lede">
       HypoKiln never talks to provider APIs directly. Each stage spawns a logged-in coding CLI as a subprocess; auth lives in the CLI's session file. HypoKiln cannot read your token even if it wanted to.
     </p>
-    <div class="compare">
+    <div class="compare triple">
       <div>
         <div class="label">codex</div>
         <h3>OpenAI</h3>
